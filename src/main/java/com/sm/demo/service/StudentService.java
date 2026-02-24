@@ -7,6 +7,7 @@ import com.sm.demo.mapper.StudentMapper;
 import com.sm.demo.repository.StudentRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,8 +36,16 @@ public class StudentService {
         return studentMapper.toDto(student);
     }
 
+    @Transactional
     public void updateStudent ( StudentDto studentDto, Long id ) {
-            Student s = studentRepo.getStudentById(id);
-            studentMapper.updatetoEntity(studentDto, s);
+            Student s = studentRepo.findById(id)
+                            .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+            studentMapper.updateToEntity(studentDto, s);
+    }
+
+    public void deleteStudent ( Long id ) {
+        Student s = studentRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+        studentRepo.delete(s);
+
     }
 }
