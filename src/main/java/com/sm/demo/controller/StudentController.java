@@ -3,6 +3,7 @@ package com.sm.demo.controller;
 import com.sm.demo.dto.StudentDto;
 import com.sm.demo.dto.TeacherDto;
 import com.sm.demo.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> addStudent (@RequestBody StudentDto studentDTO) {
+    public ResponseEntity<StudentDto> addStudent (@RequestBody @Valid StudentDto studentDTO) {
         StudentDto result = studentService.save(studentDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -36,7 +37,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<StudentDto> updateStudent (@RequestBody StudentDto studentDTO, @PathVariable Long id) {
+    public ResponseEntity<StudentDto> updateStudent (@RequestBody @Valid StudentDto studentDTO, @PathVariable Long id) {
         studentService.update(studentDTO, id);
         return ResponseEntity.noContent().build();
     }
