@@ -1,6 +1,7 @@
 package com.sm.demo.controller;
 
 import com.sm.demo.dto.StudentDto;
+import com.sm.demo.dto.TeacherDto;
 import com.sm.demo.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,18 +18,18 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping
-    public List<StudentDto> getAllStudents() {
-        return studentService.getAllStudents();
+    public ResponseEntity<List<StudentDto>> getAllStudents() {
+        return ResponseEntity.ok(studentService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.getStudentById(id));
+        return ResponseEntity.ok(studentService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<StudentDto> addStudent (@RequestBody StudentDto studentDTO) {
-        StudentDto result = studentService.addStudent(studentDTO);
+        StudentDto result = studentService.save(studentDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(result);
@@ -36,13 +37,13 @@ public class StudentController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<StudentDto> updateStudent (@RequestBody StudentDto studentDTO, @PathVariable Long id) {
-        studentService.updateStudent(studentDTO, id);
-        return ResponseEntity.ok().build();
+        studentService.update(studentDTO, id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
+        studentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

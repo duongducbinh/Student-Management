@@ -1,4 +1,4 @@
-package com.sm.demo.Entity;
+package com.sm.demo.entity;
 
 import com.sm.demo.enums.Gender;
 import jakarta.persistence.*;
